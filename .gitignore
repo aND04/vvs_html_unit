@@ -4,3 +4,7 @@
 *.iml
 target
 .settings
+/src/main/resources/data/hsqldb/cssdb.lck
+/src/main/resources/data/hsqldb/cssdb.log
+/src/main/resources/data/hsqldb/cssdb.properties
+/src/main/resources/data/hsqldb/cssdb.script
