@@ -18,7 +18,7 @@ public class CustomerSaleDeliveryTest extends VvsTest {
     private static final String VAT = "221172025";
 
     @Test
-    public void test() throws IOException {
+    public void insertNewSaleDeliveryTest() throws IOException {
         CustomerDTO customer = new CustomerDTO(888, Integer.parseInt(VAT), "fc52475", 919717597);
         insertNewCustomer(customer);
         HtmlPage customerPage = submitForm(get("GetCustomerPageController",
