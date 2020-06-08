@@ -1,17 +1,13 @@
 package webapp.html_unit;
 
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import org.junit.Test;
 import webapp.services.CustomerDTO;
 import webapp.utils.AddressTestHelper;
 import webapp.utils.VvsTest;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +23,16 @@ public class AddressInsertTest extends VvsTest {
         // table row count returns the header as one of the rows, which is not an address
         int initialNumberOfAddresses = 1;
         try {
-            initialNumberOfAddresses = getCustomerAddresses().getRowCount();
+            initialNumberOfAddresses = getCustomerAddresses(VAT).getRowCount();
         } catch (IndexOutOfBoundsException e) {
         }
 
-        HtmlPage addressPage = navigate("addAddressToCustomer.html", "Enter Address");
-        HtmlForm newAddressForm = getForm(addressPage, "GetCustomerPageController");
         AddressTestHelper firstAddress = new AddressTestHelper("Easy St.", "1", "1173", "Lisbon");
-        addAddress(newAddressForm, firstAddress);
+        addAddress(VAT, firstAddress);
         AddressTestHelper secondAddress = new AddressTestHelper("Easy St. 2", "2", "1174", "Lisbon2");
-        addAddress(newAddressForm, secondAddress);
+        addAddress(VAT, secondAddress);
 
-        HtmlTable table = getCustomerAddresses();
+        HtmlTable table = getCustomerAddresses(VAT);
         assertEquals(2L, table.getRowCount() - initialNumberOfAddresses);
         List<HtmlTableRow> rows = table.getRows().stream().skip(table.getRowCount() - 2).collect(Collectors.toList());
         verifySavedAddressInfo(firstAddress, rows.get(0));
@@ -52,21 +46,5 @@ public class AddressInsertTest extends VvsTest {
         assertEquals(row.getCell(1).asText(), address.getDoor());
         assertEquals(row.getCell(2).asText(), address.getPostalCode());
         assertEquals(row.getCell(3).asText(), address.getLocality());
-    }
-
-    private HtmlTable getCustomerAddresses() throws IOException {
-        HtmlPage customerInfoPage = submitForm(get("GetCustomerPageController",
-                Arrays.asList(new NameValuePair("vat", VAT), new NameValuePair("submit", "Get Customer"))));
-
-        return (HtmlTable) customerInfoPage.getElementsByTagName("table").get(0);
-    }
-
-    private void addAddress(HtmlForm form, AddressTestHelper address) throws IOException {
-        textInput(form, "vat", VAT);
-        textInput(form, "address", address.getAddress());
-        textInput(form, "door", address.getDoor());
-        textInput(form, "postalCode", address.getPostalCode());
-        textInput(form, "locality", address.getLocality());
-        clickButtonByValue(form, "Insert");
     }
 }

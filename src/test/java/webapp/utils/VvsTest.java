@@ -1,10 +1,7 @@
 package webapp.utils;
 
 import com.gargoylesoftware.htmlunit.*;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import org.junit.BeforeClass;
 import webapp.services.CustomerDTO;
@@ -12,10 +9,12 @@ import webapp.services.CustomerDTO;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public abstract class VvsTest {
 
@@ -97,8 +96,28 @@ public abstract class VvsTest {
         clickButtonByValue(form, "Remove");
     }
 
-    public HtmlPage insertNewSale(String vat) throws IOException {
-        insertNewCustomer(new CustomerDTO(995, Integer.parseInt(vat), "fc52475 - 3", 919717597));
+    public void addAddress(String vat, AddressTestHelper address) throws IOException {
+        HtmlPage addressPage = navigate("addAddressToCustomer.html", "Enter Address");
+        HtmlForm newAddressForm = getForm(addressPage, "GetCustomerPageController");
+        textInput(newAddressForm, "vat", vat);
+        textInput(newAddressForm, "address", address.getAddress());
+        textInput(newAddressForm, "door", address.getDoor());
+        textInput(newAddressForm, "postalCode", address.getPostalCode());
+        textInput(newAddressForm, "locality", address.getLocality());
+        clickButtonByValue(newAddressForm, "Insert");
+    }
+
+    public HtmlTable getCustomerAddresses(String vat) throws IOException {
+        HtmlPage customerInfoPage = submitForm(get("GetCustomerPageController",
+                Arrays.asList(new NameValuePair("vat", vat), new NameValuePair("submit", "Get Customer"))));
+        assertNotNull(customerInfoPage.getElementsByTagName("table"));
+        return (HtmlTable) customerInfoPage.getElementsByTagName("table").get(0);
+    }
+
+    public HtmlPage insertNewSale(String vat, boolean newCustomer) throws IOException {
+        if (newCustomer) {
+            insertNewCustomer(new CustomerDTO(995, Integer.parseInt(vat), "fc52475 - 3", 919717597));
+        }
         HtmlPage newSalePage = navigate("addSale.html", "New Sale");
         HtmlForm newSaleForm = getForm(newSalePage, "AddSalePageController");
         textInput(newSaleForm, "customerVat", vat);

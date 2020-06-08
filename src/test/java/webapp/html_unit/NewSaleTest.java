@@ -17,7 +17,7 @@ public class NewSaleTest extends VvsTest {
 
     @Test
     public void insertNewSaleTest() throws IOException {
-        HtmlPage submittedSalesPage = insertNewSale(VAT);
+        HtmlPage submittedSalesPage = insertNewSale(VAT, true);
         HtmlTable table = (HtmlTable) submittedSalesPage.getElementsByTagName("table").get(0);
         assertEquals("O", table.getRow(table.getRowCount() - 1).getCell(3).asText());
         removeCustomer(VAT);
@@ -25,7 +25,7 @@ public class NewSaleTest extends VvsTest {
 
     @Test
     public void closeExitingSaleTest() throws IOException {
-        insertNewSale(VAT);
+        insertNewSale(VAT, true);
         HtmlPage closeSalePage = navigate("UpdateSaleStatusPageControler", "Enter Sale Id");
         HtmlTable table = (HtmlTable) closeSalePage.getElementsByTagName("table").get(0);
         assertEquals("O", table.getRow(table.getRowCount() - 1).getCell(3).asText());
