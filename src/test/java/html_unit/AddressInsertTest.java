@@ -25,7 +25,12 @@ public class AddressInsertTest extends VvsTest {
     @Test
     public void addressInsertionTest() throws IOException {
         insertNewCustomer(new CustomerDTO(999, Integer.parseInt(VAT), "fc52475", 919717597));
-        int initialNumberOfAddresses = getCustomerAddresses().getRowCount();
+        // table row count returns the header as one of the rows, which is not an address
+        int initialNumberOfAddresses = 1;
+        try {
+            initialNumberOfAddresses = getCustomerAddresses().getRowCount();
+        } catch (IndexOutOfBoundsException e) {
+        }
 
         HtmlPage addressPage = navigate("addAddressToCustomer.html", "Enter Address");
         HtmlForm newAddressForm = getForm(addressPage, "GetCustomerPageController");
