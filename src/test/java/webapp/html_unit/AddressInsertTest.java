@@ -1,15 +1,14 @@
-package html_unit;
+package webapp.html_unit;
 
-import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import org.junit.Test;
-import utils.AddressTestHelper;
-import utils.VvsTest;
 import webapp.services.CustomerDTO;
+import webapp.utils.AddressTestHelper;
+import webapp.utils.VvsTest;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,9 +55,8 @@ public class AddressInsertTest extends VvsTest {
     }
 
     private HtmlTable getCustomerAddresses() throws IOException {
-        HtmlPage customerInfoPage = submitForm("GetCustomerPageController",
-                HttpMethod.GET,
-                Arrays.asList(new NameValuePair("vat", VAT), new NameValuePair("submit", "Get Customer")));
+        HtmlPage customerInfoPage = submitForm(get("GetCustomerPageController",
+                Arrays.asList(new NameValuePair("vat", VAT), new NameValuePair("submit", "Get Customer"))));
 
         return (HtmlTable) customerInfoPage.getElementsByTagName("table").get(0);
     }

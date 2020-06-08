@@ -1,4 +1,4 @@
-package utils;
+package webapp.utils;
 
 public class AddressTestHelper {
 

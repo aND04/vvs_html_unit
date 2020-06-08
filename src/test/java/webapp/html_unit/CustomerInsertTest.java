@@ -1,12 +1,12 @@
-package html_unit;
+package webapp.html_unit;
 
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import org.junit.Test;
-import utils.VvsTest;
 import webapp.services.CustomerDTO;
+import webapp.utils.VvsTest;
 
 import java.io.IOException;
 import java.util.List;

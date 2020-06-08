@@ -1,4 +1,4 @@
-package utils;
+package webapp.utils;
 
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -12,18 +12,16 @@ import webapp.services.CustomerDTO;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class VvsTest {
 
-    protected static final String APPLICATION_URL = "http://localhost:8080/VVS_webappdemo/";
-    protected static final int APPLICATION_NUMBER_USE_CASES = 11;
-
     protected static HtmlPage page;
 
+    private static final String APPLICATION_URL = "http://localhost:8080/VVS_webappdemo/";
     private static WebClient webClient;
 
     @BeforeClass
@@ -57,16 +55,24 @@ public abstract class VvsTest {
         return currentPage.getFirstByXPath("//form[@action='" + action + "']");
     }
 
-    public HtmlPage submitForm(String controller, HttpMethod httpMethod, List<NameValuePair> values) throws IOException {
-        URL url = new URL(APPLICATION_URL + controller);
-        WebRequest webRequest = new WebRequest(url, httpMethod);
-        webRequest.setRequestParameters(new ArrayList<>());
-        webRequest.getRequestParameters().addAll(values);
-
+    public HtmlPage submitForm(WebRequest webRequest) throws IOException {
         HtmlPage resultPage = webClient.getPage(webRequest);
-        assertEquals(httpMethod, resultPage.getWebResponse().getWebRequest().getHttpMethod());
+        assertEquals(200, resultPage.getWebResponse().getStatusCode());
 
         return resultPage;
+    }
+
+    public WebRequest get(String controller, List<NameValuePair> values) throws MalformedURLException {
+        WebRequest webRequest = new WebRequest(new URL(APPLICATION_URL + controller), HttpMethod.GET);
+        webRequest.setRequestParameters(values);
+        return webRequest;
+    }
+
+    public WebRequest post(String controller, List<NameValuePair> body) throws MalformedURLException {
+        WebRequest webRequest = new WebRequest(new URL(APPLICATION_URL + controller), HttpMethod.POST);
+        /* TODO parse NameValuePair list if more than one element is present */
+        webRequest.setRequestBody(String.format("%s=%s", body.get(0).getName(), body.get(0).getValue()));
+        return webRequest;
     }
 
     public HtmlPage navigate(String href, String pageTitle) throws MalformedURLException {
@@ -89,5 +95,14 @@ public abstract class VvsTest {
         HtmlForm form = getForm(removeCustomerPage, "RemoveCustomerPageController");
         textInput(form, "vat", vat);
         clickButtonByValue(form, "Remove");
+    }
+
+    public HtmlPage insertNewSale(String vat) throws IOException {
+        insertNewCustomer(new CustomerDTO(995, Integer.parseInt(vat), "fc52475 - 3", 919717597));
+        HtmlPage newSalePage = navigate("addSale.html", "New Sale");
+        HtmlForm newSaleForm = getForm(newSalePage, "AddSalePageController");
+        textInput(newSaleForm, "customerVat", vat);
+        return submitForm(post("AddSalePageController",
+                Collections.singletonList(new NameValuePair("customerVat", vat))));
     }
 }
