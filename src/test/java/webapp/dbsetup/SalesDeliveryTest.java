@@ -3,6 +3,7 @@ package webapp.dbsetup;
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.operation.Operation;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.ApplicationException;
 import webapp.services.CustomerService;
 import webapp.services.SaleService;
@@ -18,11 +19,13 @@ public class SalesDeliveryTest extends VvsDBTest {
     }
 
     @Test
+    @DisplayName("Extra test 1")
     public void getSalesDeliveryByVatTest() throws ApplicationException {
         assertEquals(NUM_INIT_SALESDELIVERY, SaleService.INSTANCE.getSaleByCustomerVat(VAT).sales.size());
     }
 
     @Test
+    @DisplayName("Extra test 1")
     public void addNewSalesDeliveryIncreasesSalesSizeByOneTest() throws ApplicationException {
         int saleDeliverySize = SaleService.INSTANCE.getSalesDeliveryByVat(VAT).sales_delivery.size();
         int saleId = SaleService.INSTANCE.getSaleByCustomerVat(VAT).sales.get(0).id;

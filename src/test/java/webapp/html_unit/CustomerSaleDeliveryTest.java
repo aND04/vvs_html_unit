@@ -3,6 +3,7 @@ package webapp.html_unit;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.CustomerDTO;
 import webapp.utils.AddressTestHelper;
 import webapp.utils.VvsTest;
@@ -18,6 +19,9 @@ public class CustomerSaleDeliveryTest extends VvsTest {
     private static final String VAT = "221172025";
 
     @Test
+    @DisplayName("create a new customer, create a new sale for her, insert a delivery for " +
+            "that sale and then show the sale delivery. Check that all intermediate " +
+            "pages have the expected information")
     public void insertNewSaleDeliveryTest() throws IOException {
         CustomerDTO customer = new CustomerDTO(888, Integer.parseInt(VAT), "fc52475", 919717597);
         insertNewCustomer(customer);

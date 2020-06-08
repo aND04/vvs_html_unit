@@ -3,6 +3,7 @@ package webapp.dbsetup;
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.operation.Operation;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.ApplicationException;
 import webapp.services.SaleDTO;
 import webapp.services.SaleService;
@@ -20,6 +21,7 @@ public class SalesTest extends VvsDBTest {
     }
 
     @Test
+    @DisplayName("adding a new sale increases the total number of all sales by one")
     public void addingSaleIncreasesSalesSizeByOneTest() throws ApplicationException {
         List<SaleDTO> sales = SaleService.INSTANCE.getSaleByCustomerVat(VAT).sales;
         SaleService.INSTANCE.addSale(VAT);
@@ -27,6 +29,7 @@ public class SalesTest extends VvsDBTest {
     }
 
     @Test
+    @DisplayName("Extra test 1")
     public void newSaleShouldHaveOpenStatusTest() throws ApplicationException {
         SaleService.INSTANCE.addSale(VAT);
         List<SaleDTO> sales = SaleService.INSTANCE.getSaleByCustomerVat(VAT).sales;
@@ -35,6 +38,7 @@ public class SalesTest extends VvsDBTest {
     }
 
     @Test
+    @DisplayName("Extra test 1")
     public void updatingSaleShouldChangeTheStatusToClosedTest() throws ApplicationException {
         List<SaleDTO> sales = SaleService.INSTANCE.getSaleByCustomerVat(VAT).sales;
         SaleDTO sale = sales.get(sales.size() - 1);

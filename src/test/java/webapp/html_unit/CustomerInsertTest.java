@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.CustomerDTO;
 import webapp.utils.VvsTest;
 
@@ -21,6 +22,8 @@ public class CustomerInsertTest extends VvsTest {
     private static final String VAT2 = "229841783";
 
     @Test
+    @DisplayName("insert two new customers and check if all the information is properly " +
+            "listed in the List All Customers use case")
     public void customerInsertionTest() throws IOException {
         CustomerDTO firstCustomer = new CustomerDTO(998, Integer.parseInt(VAT1), "fc52475 - 1", 929717596);
         insertNewCustomer(firstCustomer);

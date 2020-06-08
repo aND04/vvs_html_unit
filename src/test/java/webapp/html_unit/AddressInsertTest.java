@@ -3,6 +3,7 @@ package webapp.html_unit;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.CustomerDTO;
 import webapp.utils.AddressTestHelper;
 import webapp.utils.VvsTest;
@@ -18,6 +19,9 @@ public class AddressInsertTest extends VvsTest {
     private static final String VAT = "259428272";
 
     @Test
+    @DisplayName("insert two new addresses for an existing customer, then the table of " +
+            "addresses of that client includes those addresses and its total row size " +
+            "increases by two")
     public void addressInsertionTest() throws IOException {
         insertNewCustomer(new CustomerDTO(999, Integer.parseInt(VAT), "fc52475", 919717597));
         // table row count returns the header as one of the rows, which is not an address

@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.utils.VvsTest;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class NewSaleTest extends VvsTest {
     private static final String VAT = "222560436";
 
     @Test
+    @DisplayName("a new sale will be listed as an open sale for the respective customer")
     public void insertNewSaleTest() throws IOException {
         HtmlPage submittedSalesPage = insertNewSale(VAT, true);
         HtmlTable table = (HtmlTable) submittedSalesPage.getElementsByTagName("table").get(0);
@@ -24,6 +26,7 @@ public class NewSaleTest extends VvsTest {
     }
 
     @Test
+    @DisplayName("after closing a sale, it will be listed as closed")
     public void closeExitingSaleTest() throws IOException {
         insertNewSale(VAT, true);
         HtmlPage closeSalePage = navigate("UpdateSaleStatusPageControler", "Enter Sale Id");

@@ -3,6 +3,7 @@ package webapp.dbsetup;
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.operation.Operation;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import webapp.services.ApplicationException;
 import webapp.services.CustomerDTO;
 import webapp.services.CustomerService;
@@ -22,6 +23,7 @@ public class MultipleCustomerDeleteTest extends VvsDBTest {
     }
 
     @Test
+    @DisplayName("after deleting all costumers, the list of all customers should be empty")
     public void deletingAllCustomersShouldEmptyCustomerTableTest() throws ApplicationException {
         List<CustomerDTO> customers = CustomerService.INSTANCE.getAllCustomers().customers;
         assertEquals(5, customers.size());
